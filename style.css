@@ -1,0 +1,199 @@
+@font-face {
+    font-family: 'Futura';
+    src: url('fonts/futur.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  body {
+    background-color: #ede6d6;
+    margin: 0;
+    font-family: 'Futura', sans-serif;
+    position: relative;
+    height: 100vh;
+  }
+  
+  #output-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 20px;
+    padding: 10px;
+    word-wrap: break-word;
+    overflow: auto;
+  }
+  
+  #output {
+    flex: 2;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.8em;
+    font-family: Futura, sans-serif;
+    padding: 10px;
+    background: none;
+    border: none;
+    margin: 0;
+    max-height: none;
+    overflow: visible;
+  }
+  
+  #output p {
+    margin: 0;
+    padding: 5px;
+    color: rgb(0, 0, 0);
+    font-size: 15px;
+    text-align: left;
+  }
+  
+  #image-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-left: 20px;
+    flex: 1;
+  }
+  
+  #staticImage {
+    max-width: 350px;
+    max-height: 350px;
+    margin: 0;
+    border: none;
+    box-shadow: none;
+  }
+  
+  #button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .button {
+    background-color: #d6a82e;
+    color: #000000;
+    padding: 15px 32px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    margin: 5px;
+    font-family: Futura, sans-serif;
+    transition: transform 0.3s, background-color 0.3s, color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #2b5736;
+    color: #000000;
+    transform: translateY(-5px);
+  }
+  
+  #restartBtn {
+    display: none;
+    background-color: #FF5733;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ede6d6;
+    padding: 10px 20px;
+    border-bottom: 1px solid black;
+  }
+  
+  h1, nav a {
+    font-size: 2rem;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  h1:hover, nav a:hover {
+    font-style: italic;
+  }
+  
+  h1 a {
+    color: inherit;
+  }
+  
+  nav a {
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 2rem;
+  }
+  .line-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;; 
+    padding-left: 1px;
+    padding-top: 0px;
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;  
+  }
+  
+  .line {
+    width: 100%;  
+    height: 5px;  
+    background-color: black;
+    display: block;
+    margin: 0; 
+  }
+  
+  .text {
+    margin: 2px 0; 
+  }
+  
+  h1, h4 {
+    margin: 2px 0; 
+  }
+  
+  a {
+    text-decoration: none;  
+  }
+  
+  a h1 {
+    color: #2b5736;  
+    font-size: 4rem;
+  }
+  
+  .text h1 {
+    font-size: 7rem;  
+    margin: 5px 0; 
+  }
+  
+  
+  
+  .line:nth-child(1) { width: 50%; }
+  .line:nth-child(2) { width: 48%; }
+  .line:nth-child(3) { width: 44%; }
+  .line:nth-child(4) { width: 40%; }
+  .line:nth-child(5) { width: 45%; }
+  .line:nth-child(6) { width: 38%; }
+  .line:nth-child(7) { width: 50%; }
+  .line:nth-child(8) { width: 46%; }
+  .line:nth-child(9) { width: 43%; }
+  .line:nth-child(10) { width: 41%; }
+  .line:nth-child(11) { width: 49%; }
+  .line:nth-child(12) { width: 47%; }
+  .line:nth-child(13) { width: 44%; }
+  .line:nth-child(14) { width: 42%; }
+  .line:nth-child(15) { width: 50%; }
+  .line:nth-child(16) { width: 39%; }
+  .line:nth-child(17) { width: 47%; }
+  .line:nth-child(18) { width: 48%; }
+  .line:nth-child(19) { width: 43%; }
+  .line:nth-child(20) { width: 50%; }
+  .line:nth-child(21) { width: 46%; }
+  .line:nth-child(22) { width: 45%; }
+  .line:nth-child(23) { width: 40%; }
+  .line:nth-child(24) { width: 42%; }
+  .line:nth-child(25) { width: 38%; }
+  .line:nth-child(26) { width: 50%; }
+  .line:nth-child(27) { width: 49%; }
+  .line:nth-child(28) { width: 47%; }
+  .line:nth-child(29) { width: 44%; }
+  .line:nth-child(30) { width: 50%; }
+  

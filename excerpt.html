@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Excerpter</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<header>
+   <h1>
+    <a href="index.html">Excerpter</a>
+   </h1>
+   <nav>
+    <a href="about.html">About</a>
+   </nav>
+</header>
+
+
+<body>
+   <div id="button-container" class="button-box">
+      
+       <button id="randomBtn" class="button">Generate</button>
+       <button id="restartBtn" class="button" style="display:none;">Restart</button>
+   </div>
+   <div id="output-wrapper">
+       <div id="output"></div>
+       <div id="image-wrapper" style="display:none;">
+           <img id="staticImage" src="" alt="Static Random Image">
+       </div>
+   </div>
+ 
+  
+   <div id="button-container" class="button-box">
+       <audio id="clickSound" src="typewriter.mp3" preload="auto"></audio>
+       <audio id="resetSound" src="typewriter-button-slide-1a-47722.mp3" preload="auto"></audio>
+   </div>
+
+
+   <script>
+       const excerpts = [
+           "The sun screams through tattered curtains colored like powdered flesh, and I groan and thrash about under my covers in protest.",
+           "Charged with some strange, phantom reminder of why I came out here", 
+           "all the apocryphal significance of this pilgrimage",
+           "That's exactly what I'm saying:",
+           "Over the kitchen counter, there's a broken window with shatterings made upon it like cobwebs, and a missing panel that a chill wind pensively sneaks through when it musters the courage.",
+           "<br>",
+           "Out here, birds chirp irregularly, letting out strange, piercing shrieks with no regard or sympathy for those still sleeping",
+           "Open the door- minding it's jerry-rigged hinges of rusted steel and misfit screwing- you will not find me.",
+           "The sun was stowed away so long it had been forgotten, collecting dust;",
+           "And the night was never to end, and all those things that should not be brought to light were allowed to reign in unabashed fufillment.",
+            "Oh we danced the night away, but that night only fell into another, and another; so much so the phrase lost all meaning and any motion that was not orderly in step with the waltz was something to be woefully ashamed of.",
+           "Take in the hunch and uneven gait only momentarily paused, keeled like felled game in the thicket.",
+           "<br>",
+           "<br>",
+           "<br>",
+           "See, I have long bounced this idea round and round in my head- should I say back and forth? Yes, back and forth would be more fitting:”",
+           "'I can think,' she continues 'should there be no meaning to any of this. That is, this anything at all is meaningless. Devoid of plan, pretense, or duty. You do follow, yes?'",
+           "He asked me:",
+           "She aksed me: ",
+           "But,",
+           "However",
+           "As a result",
+           "&",
+           "A herd of sheep, or ambiguous tufted creatures, dyed in a white hue, crested the rim of a valley to their right.",
+           "At that, the two voted it most prudent to press on",
+           "What is this force that binds us to our suffering, what strange metal tethers us to the rock from which birds of prey lash and tear at us?",
+           "And they would laugh, if only they could",
+           "It is with great jubilation shadowed by a heavy heart that which I relay this message to you today:",
+           "If you can bear it, take a slice of him and serve his subdued, fermented melancholy to the more well-adjusted",
+           "...",
+           "Nearing the terminal point of a queue, one's anticipated conclusion recedes into mere abstraction.",
+           "I remember little of the night prior, or even the one before it at that.",
+            "There are passing specters in my mind, faces that were painted with a dirty brush, blending them with the rest of the hues and shades that made up the scene around them.",
+           "This is the kind of lesson which you do not read or absorb, but rather you find it- maybe it finds you.",
+           "The floor is so cold, and my feet are bare at this hour.",
+           "Digging at the ground, they burrowed with calloused hands",
+           "they harrowed themselves so much the fresh dirt evicted the dirt collected under their fingertips",
+           "Like a pack of wild, snarling dogs grown skeletal in hunger and desperation",
+            "running about, and gnashing at their own tails",
+           "They would launch themselves into the odd bit of rancor at every sordid joke", 
+           "only before, noting the elbow pads on the jacket of this apparently respectable stranger, they would suddenly straighten up and speak of “the business” and “the kids looking at college”",
+           "It was on the shores of that realm of thought that a fresh gust of windy somebodiness wafted across.",
+           "'Oh, Laertres!' it was said before a cracked mirror, 'Come out at once!'",
+           "'He sold life insurance,'",
+           "Crouched over his own rendition on a night gone awry, he attempts to stir an apology to the bartender with the port-wine stain cleaning up his bile;",
+            "choking on a bit of half-hardened Catholic guilt as he laments:",
+           "Gazing out the window, all kinds of visions of that ocean, so alien, pave their way through her mind.",
+           "<br>",
+           "<br>",
+           "<br>",
+           "'So it goes. Who was it that said that?'",
+           "People slam their doors, cars try to start up a few times before finally reaching a static, obnoxiously loud whir before peeling off",
+           "It's all such terrible business. Awful, really.",
+            "And the town feels so grossly alive at this hour of the morning.",
+           "What a creature I was, how my head pounds. What an animal am I. A worm! Severed am I. Severed, and still breathing.",
+           "<br>",
+           "“See, tell me what you think of this- you spend enough time around something or someone, and you are almost bound to hate it in some way. And you might protest, and say you love your family, or you love your job - and that's all well and good and I am happy for you sir. But that's the thing, you might not even know you hate them- matter fact, you could also, so to not hate them, grow to hate yourself.",
+            "And oh, you won't pick up on that one either. It's a profoundly self-absorbed practice, you see, hating yourself. You may come to hate what they have made you, but it was never them dear. No, it was never the beach and it was never your family, but you all along. What do you think of that?”",
+           "Behind him stands a tree, and a proper monument of discarded cigarettes and 2-liter bottles. She wonders if people litter at the beach.",
+           "She wonders if anybody has the time or energy for such brutishness where the land meets the sea if such evil could be entertained in front of such a ceaseless testament to nature. She then remembers beach tags",
+           "she dreams of the coast, where water crashes upon cliff faces",
+           "Carrying much strange company, having strange conversations, and such a friend to the world and its creatures was I.",
+           "He recites this to himself in an ever-oscillating tone as he fetches another tracksuit.",
+           "“Money is like blood. Money is blood and blood is money, but not all money is blood money and not all blood money is earned with blood. Too much money, too much money moving too fast is a bad thing. Too much money, left to congeal and sit idly will invariably coagulate, grow thick and cumbersome. Next thing you know, you've let what you so desperately needed to survive to kill you!",
+           "And what fortunate, blind fools are we; for as long as the element of unpredictability resides in the future, so lays with it excitement, opportunity, and purpose. It is this purpose which my misguided feet were so graciously drawn from the path upon which they had diligently followed, finding themselves firmly planted in an unfamiliar meadow as if it had always been their home.",
+           "The rain has ceased, and all that is left is the lingering dew on the grass.",
+           "<br>",
+           "Leaned up against an old appliance store dyed what was once some ironic evergreen, a wiry, abnormally tall young man of hollowed complexion squirrels away from a sudden spat of rain.",
+            "In his hands is a parcel that is growing hot to the touch",
+           " Skyscrapers blot out the sky, the stars hide from man, mixed-material trees and shrubbery imported from the Republic of Tengurakiah placidly content in their concrete homes",
+           "It is just shy of 8 in the morning.",
+           "“Beg your pardon?”",
+          "Differing shades of corrugated fiber paper look hurriedly stiched together with scotch tape. Lumpy, the package seems similar in the dimensions and makeup of a fully-grown raccoon",
+           "A gentle 68 degrees Fahrenheit is diffused into the air from the series of vents that adorn every other building facade, sidewalk block, and fixing of protruding, irregular piping.",
+           "The path of each is contingent on that of their predecessor, just as theirs is to the one prior, and the cycle repeats ad Infinium.",
+           "“Good evening”",
+           "“Or you hate everything else”",
+           "And that is how I learned to fly",
+           "Against that splendent tangle, craning his neck and arrested by the novelty of the surroundings, he asks:",
+           "<br>",
+           "Many will buy wilted flowers held by a set of manicured, soft hands.",
+           "<br>",
+           "They hang low, stooping their weeping leaves to the level of the common fir and oak back home, erstwhile with origin points and roots, stretching themselves out long and wormlike into primeval roads and causeways fashioned of an alien wood that reflexively contracts against any wayward step.",
+           "Those trees that wear ashen complexions and whose long faces snake into and out of one another",
+           "This morning you woke up in our lobby, and we escorted you back to your room where we are now leaving this note for you. You were in no state to unlock the door, but it seems the lock has been broken - you apologized for it, which is appreciated, but will nonetheless carry a charge of $45.",
+           "“Nothing. Nothing in particular. What could be said? Anything would disappoint them and fall short of that elusive...absolute. And it has been precisely the absence of something that has shown me all there is to that something, only those who have it fail to recognize this.”",
+           "“Actually, it's been far too long for me to even quantify it, but I like the sounds of such a saying. Isn't it nice?",
+           "Over in the distance, you can make out a muted skyline whose boasting had been whittled to a low, sentimental whimper.",
+           "Confound you! The point still stands.",
+           "'I am a properly soured, dampened soul. And by way of that I have been blessed (burdened) with a great understanding of what a happy heart requires.'",
+           "It felt like this conversation lasted for days, and maybe it did.",
+           "'Beautiful out, isn't it?'",
+           "Each strident step is to land on one segmented, square block of concrete, with the next landing on the next- such is a little game I play with myself.",
+           "a bird does not know it is not eating a worm, it knows nothing of its meal's maturation period from cocoon to juvenile, to maturity to foodstuffs. Having no knowledge that if it were to split the worm in two, its meal would regenerate in due time. It does not call it a “worm”, it is merely food, a means to an end.",
+           "<br>",
+           "“Sometimes, I look up” he remarks, looking up to the oceanic, hungry abyss that hangs overhead like the accusatory pupil, the luminescent moon glaring down at such tiny neon bodies. “I wonder if anybody is looking back down at us. D'you ever think of that?”",
+           "At this time of year, the plumes smoke exhaled by antiquated factories past the mountains where men rarely traverse, against nights so suffocatingly dark without a light nor signage of life to be seen or heard save for mechanical whirring that inspires quaking and trembling in the wildflowers and organic growth",
+           "<br>",
+           "<br>",
+           "It laid down prostrate in front of the neon icon of the Theotokos. Eight feet wide and fourteen high.",
+           "The spirit of charity rides in Calreton's sidecar; “what is the value of fun, of the indulgences of a man's heart, if you cannot divvy up and give a slice to someone else?”.",
+           "I again make eye contact with it- the brazen nerve! I deflect its gaze, looking down at the ground, peering into my own visage in the ground",
+           "it says nothing, its lips contorted in some smile. It bears its teeth at me, almost snarling- but it's smiling! Like it's stuck in a laugh, but I haven't told a joke. The only joke here is their very being, their hubris at thinking this is in any way acceptable",
+           "The transgressor of the peace breaks into some alien diatribe, detailing how “crisp the air is”",
+           "Bent over a desk and PC is a pair of wide-cut black pants and an orange overcoat. 'Good morning.'', the figure says, not bothering to lift his eyes from the task at hand. The computer is turned off.",
+           "Carleton's head is richocheting too aggressively against itself for him to even make sense of the letter, and the prefunctory, polite tonality of it is the only thing that registers in his mind.",
+           "What derelict, decrepit nature hides behind the plaster facade on the building and sconced ceilings that overlay soggy drop paneling.",
+           "One song can change one's perception of music forever; one song is all it takes, setting a standard point from which every song hereafter will be compared to.",
+           "The hustle and bustle, the rhythmic chirping of my keycard being read, the slow whir of a train slowing down, the ocean of clack! clack! clack!",
+           "Like the phantasmagoric specters and augmentations of daily life that pass through our sleeping brains, stewed through a process that still eludes any scientific guesswork, our minds are but mere passersby and immaterial phantoms that bounce to and fro in the Godhead",
+           "He asked me a question, pensively - averting his eyes from mine, shuffling his feet, and idly fixing the cuff of his jacket.",
+           "-just merely a passing thought in the mind of God, one that was interesting enough that all that was needed was but a modicum of effort and mental faculties to follow its line of reasoning, and then- bam!",
+           "I lower my voice to an appropriate level, and beckon him to listen closer.",
+           "there is a material plane- one that would do just fine without habitation. Every single alteration made to it, those same material accomplishments we cling to as evidence of the total goal of life- namely the propagation of the species without rhyme or reason, that we create our own reason- all of these feats are birthed in mind, as ideas that we happened to cling to long enough to bring them to fruition.",
+           "“Is that so?” She replies, idly shuffling a coin between her feet.",
+           "“Interesting” The man in the red hat hurriedly gets up, moving to another seat.",
+           "“It certainly is so! And you know it, friend. Long before our time, when halls of debate were lit with oil and livelihoods were earned by thought, this question was posed by names you have never known or have long forgotten“",
+           "-As such, here I am, 'chasing the dragon'",
+           "Sandra has been rolling her own cigarettes lately. She claims a self-rolled cigarette saves the working smoker over $1500 annually.",
+           "paved with red brick, long twisted and mangled by heavy, drained feet too tired to repair them, there stands some ten buildings with embellishments of jasper, pine green, mustard, and saffron",
+           "And now, the only purpose of this pre-war brick accommodation was to provide shelter from the elements",
+            "finding respite among the peeling lead paint and layered accumulation of posters, QR codes, advertisements, and condemnation notices.",
+           "This is the one that will laugh the hardest.",
+           "It wasn't forecasted to rain tonight, and the temperature was anticipated to be well-behaved and not exceed or fall short of 70 degrees.",
+           "those high-minded things like private property, or zoning laws",
+           "the room with the floral wallpaper and cool white light bulbs fastened in pre-war lamps, the room with the storied ciselé red velvet armchair and the indolence of aerosolized Fresh Hawaiian.",
+           "May I raise that long ago, someone told a joke- like these, this joke was not particularly funny. Someone laughed, and it made the jester feel so good, so comforted. More joined in, and they too felt good, and a chorus of jubilation erupts in the local vicinity, and now you have a giggling, silly mass of people keeling over, eyes welling up, their sides hurting. From that moment onwards, nobody remembered the joke- but feared the cold reality of silence too much to escape the comfortable confines of the rancor. Wouldn't that be funny?",
+           "A woman, this time in a beige-ish-gray hat, full-brimmed, gets aboard, and, looking for a seat, assumes the now vacant red-hatted man's.",
+           "I have found they laugh. It was only through such silence where no laughter could be found that my ears were primed to understand this.",
+           "They will laugh and laugh, and lose sight of what it is they are laughing about; they are like flames being passed from candle to candle, if one were to go out, all that would be needed is one more to relight the others.",
+           "A striking chord, like a single plucking of a heavenly harp",
+           "I chase its sound in everything.",
+           "With this, the whole group will burst out into a strangely sustained laughter, and they are not mere chuckles",
+           "nor are there any “and then somes” to be added; it is a sharp, pronounced laugh for any passerby to be subject to.",
+           "Only wishing to say, as a call to action, that you are the very wardens of the jail you are kept in!",
+           "'You know- I've been thinking a lot lately. See those half-moons that hang under my eyes? I rest my case.'",
+           "He drew two sevens and a king",
+           "subjecting the poker table to his improv treatise on the divine right of kings before tearing the head off it, making sure everyone was watching",
+           "'It's been on my mind; that moment when we first hit flame- lightning struck some shrubbery and in that flaming bush we saw God, then realizing we could strike out on our own? You were there, right? Well, maybe in that moment, like a flash in the pan: the scaffolding was laid to the Hagia Sofia, and then the Chrysler Building; Hokusai laid the last brush stroke on the Great Wave; Napolean hung his head in defeat at Waterloo; and the Plutonium fissioned and Fat Man went off. Maybe there were a few moments in delay between them, but overall, it was just like that. Just in that instant.'",
+           "Lend your ears to stately hooves coursing in, carried downwind from the idle swaying of oriens, cresting themselves from among those murmured waves gargled in the mouth between the cardinal, craggy lips of Gibraltar and Tangier.",
+       ];
+
+
+       const images = [
+           "pie.png",
+           "inferi.png",
+           "fount.png",
+           "college.png",
+           "sphinx.png",
+           "nowhere.png",
+           "hegel.png",
+           "epoch.png",
+       ];
+
+
+       let availableExcerpts = [...excerpts];
+       let generateCount = 0;
+       const maxGenerates = 5;
+       const randomBtn = document.getElementById('randomBtn');
+       const restartBtn = document.getElementById('restartBtn');
+       const outputDiv = document.getElementById('output');
+       const staticImage = document.getElementById('staticImage');
+       const imageWrapper = document.getElementById('image-wrapper');
+       const clickSound = document.getElementById('clickSound');
+       const resetSound = document.getElementById('resetSound');
+      
+      
+       function getRandomImage() {
+           const randomIndex = Math.floor(Math.random() * images.length);
+           return images[randomIndex];
+       }
+
+
+      
+       randomBtn.addEventListener('click', () => {
+           clickSound.play();
+
+
+           if (availableExcerpts.length === 0 || generateCount >= maxGenerates) {
+               randomBtn.style.display = 'none';
+               restartBtn.style.display = 'block';
+               return;
+           }
+
+
+           generateCount++;
+
+
+          
+           if (imageWrapper.style.display === 'none') {
+               imageWrapper.style.display = 'block';
+               const currentImage = getRandomImage();
+               staticImage.src = currentImage;
+           }
+
+
+           const randomIndex = Math.floor(Math.random() * availableExcerpts.length);
+           const randomText = availableExcerpts.splice(randomIndex, 1)[0];
+
+
+           const words = randomText.split(" ");
+           const randomWordIndex = Math.floor(Math.random() * words.length);
+           const chosenWord = words[randomWordIndex];
+           words[randomWordIndex] = Math.random() < 0.5
+               ? `<b>${chosenWord}</b>`
+               : `<i>${chosenWord}</i>`;
+           const styledText = words.join(" ");
+
+
+           const newLine = document.createElement('p');
+           newLine.innerHTML = styledText;
+
+
+           outputDiv.appendChild(newLine);
+       });
+
+
+     
+       restartBtn.addEventListener('click', () => {
+           resetSound.play();
+           availableExcerpts = [...excerpts];
+           generateCount = 0;
+           outputDiv.innerHTML = '';
+           randomBtn.style.display = 'block';
+           restartBtn.style.display = 'none';
+
+
+         
+           const currentImage = getRandomImage();
+           staticImage.src = currentImage;
+       });
+   </script>
+</body>
+</html>
