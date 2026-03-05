@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="180;url=excerpt.html">
+  <title>Excerpter — About</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #ede6d6;
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
+      height: 56px;
+      border-bottom: 1px solid #000;
+    }
+
+    header, header a, header h1 {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.82rem;
+      font-weight: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    #header-title {
+      flex: 0 0 25%;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      background: #ede6d6;
+      border: none;
+      border-right: 1px solid #000;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    #header-title:hover { background: #ddd5c4; }
+    #header-title h1 { color: #000; }
+
+    #header-spacer {
+      flex: 1;
+      border-right: 1px solid #000;
+    }
+
+    #header-about {
+      flex: 0 0 25%;
+      display: flex;
+      align-items: stretch;
+      background: #000;
+    }
+    #header-about a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 24px;
+      width: 100%;
+      color: #ede6d6;
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    #header-about a:hover { background: #222; }
+
+    /* ── Main content ── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 24px 80px;
+    }
+
+    section { margin-bottom: 52px; }
+
+    h2 {
+      font-size: 0.78rem;
+      font-weight: normal;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #000;
+      border-bottom: 1px solid #000;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-family: 'IBM Plex Serif', Georgia, serif;
+      font-size: 0.97rem;
+      line-height: 1.75;
+      font-weight: 300;
+      color: #000;
+    }
+
+    p + p { margin-top: 16px; }
+
+    /* ── Bob Dylan video ── */
+    .video-wrapper {
+      margin: 24px 0;
+      border: 1px solid #000;
+    }
+    .video-container {
+      position: relative;
+      cursor: pointer;
+    }
+    .video-container video {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+    .play-overlay.hidden { display: none; }
+    .play-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #ede6d6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .video-caption {
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      border-top: 1px solid #000;
+      color: #555;
+      font-family: 'IBM Plex Sans', sans-serif;
+    }
+
+    /* ── Source list ── */
+    .source-list {
+      list-style: none;
+      border-top: 1px solid #000;
+    }
+    .source-list li {
+      display: flex;
+      gap: 16px;
+      align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.15);
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+    .source-list li .credit {
+      flex: 0 0 160px;
+      font-style: italic;
+      color: #555;
+    }
+    .source-list li a {
+      color: #000;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      word-break: break-all;
+    }
+    .source-list li a:hover { color: #c8785a; }
+
+    /* ── Contact ── */
+    .contact a {
+      color: #000;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .contact a:hover { color: #c8785a; }
+
+    @media (max-width: 600px) {
+      #header-title { flex: 0 0 50%; }
+      #header-about { flex: 0 0 50%; }
+      #header-spacer { display: none; }
+      .source-list li { flex-direction: column; gap: 2px; }
+      .source-list li .credit { flex: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a id="header-title" href="excerpt.html">
+    <h1>Excerpter</h1>
+  </a>
+  <div id="header-spacer"></div>
+  <div id="header-about">
+    <a href="about.html">About</a>
+  </div>
+</header>
+
+<main>
+
+  <section>
+    <h2>What is Excerpter?</h2>
+    <p>Excerpter is a simple program inspired by the cut-up writing technique, the practice of pulling text apart and reassembling it into novel arrangements. While the origin of this practice is as vague as its mechanics, it was popularized by Bob Dylan and William S. Burroughs (you can see a video of Bob Dylan using it below).</p>
+    <p>The meaning of such output is entirely subjective, relying on a user's sense of pattern-recognition and personal context in interpreting the result.</p>
+    <p>Pulling from 80+ original lines of text, the Excerpter generates a unique assortment of prose, peppering the text with random italicization, weight, size, and punctuation. With reckless abandon, it presents and edits an array of stock video footage to augment the reading experience.</p>
+    <p>Any and all meaning pulled from the output of this program is yours and yours alone.</p>
+    <p>Feel free to use the text here in your own writing endeavors. Who knows? This might just be the start of something special.</p>
+    <div class="video-wrapper">
+      <div class="video-container" id="dylan-container">
+        <video id="dylan-video" preload="metadata" playsinline>
+          <source src="bobdylan.mp4" type="video/mp4">
+        </video>
+        <div class="play-overlay" id="dylan-overlay">
+          <div class="play-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <polygon points="6,3 17,10 6,17" fill="#000"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="video-caption">Bob Dylan demonstrating the cut-up technique — <i>Don't Look Back</i>, 1967</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How was it made?</h2>
+    <p>It's plain HTML, CSS, and JavaScript — nothing fancy under the hood. Each press pulls a fragment at random from the corpus and decides on the spot how to render it: how big, how indented, whether to italicize, whether to mess with the punctuation.</p>
+    <p>The video side runs two video elements trading off behind the scenes, so there's no black flash between clips. The longer it runs, the more it layers on top of itself — color blocks, text, strips and halves of other footage bleeding through. Everything that gets added is drawn from the same pool with equal odds, so nothing is more likely than anything else.</p>
+    <p>All video and sound components were ethically sourced. The clicking keyboard sound was sourced from freesound_community on Pixabay, and the video sources can be seen below.</p>
+  </section>
+
+  <section class="contact">
+    <h2>Contact</h2>
+    <p>For questions, complaints, or conversation — <a href="mailto:rorywalsh425@gmail.com">rorywalsh425@gmail.com</a></p>
+  </section>
+
+  <section>
+    <h2>Video sources</h2>
+    <ul class="source-list">
+      <li><span class="credit">Airam Dato-on</span><a href="https://www.pexels.com/video/man-picking-oranges-at-outdoor-market-36107595/" target="_blank">Man Picking Oranges at Outdoor Market</a></li>
+      <li><span class="credit">Jools Magools</span><a href="https://www.pexels.com/video/hippo-moves-from-land-to-water-20763487/" target="_blank">Hippo Moves from Land to Water</a></li>
+      <li><span class="credit">Yaroslav Shuraev</span><a href="https://www.pexels.com/video/a-woman-putting-pineapple-on-top-of-her-head-8845164/" target="_blank">Woman Putting Pineapple on Her Head</a></li>
+      <li><span class="credit">8Percent Media</span><a href="https://www.pexels.com/video/surfer-at-sunset-on-tranquil-beach-36146021/" target="_blank">Surfer at Sunset on Tranquil Beach</a></li>
+      <li><span class="credit">RDNE Stock project</span><a href="https://www.pexels.com/video/man-in-blue-polo-using-his-smartphone-5762143/" target="_blank">Man in Blue Polo Using Smartphone</a></li>
+      <li><span class="credit">Johon Lee</span><a href="https://www.pexels.com/video/colorful-gourmet-salad-with-fresh-ingredients-35973208/" target="_blank">Colorful Gourmet Salad</a></li>
+      <li><span class="credit">Henrique Feiten</span><a href="https://www.pexels.com/video/serene-sunset-walk-through-nature-35414327/" target="_blank">Serene Sunset Walk Through Nature</a></li>
+      <li><span class="credit">Polina Tankilevitch</span><a href="https://www.pexels.com/video/happy-senior-woman-dancing-5473583/" target="_blank">Happy Senior Woman Dancing</a></li>
+      <li><span class="credit">Igor Vieira</span><a href="https://www.pexels.com/video/close-up-of-marmoset-on-tree-branch-in-forest-32510069/" target="_blank">Close-up of Marmoset on Tree Branch</a></li>
+      <li><span class="credit">Cosmetica Academy</span><a href="https://www.pexels.com/video/professional-facial-treatment-in-a-clinic-36210854/" target="_blank">Professional Facial Treatment</a></li>
+      <li><span class="credit">Themba Mtegha</span><a href="https://www.pexels.com/video/outdoor-backflip-in-casual-attire-36210002/" target="_blank">Outdoor Backflip in Casual Attire</a></li>
+      <li><span class="credit">kirpiklipencere</span><a href="https://www.pexels.com/video/aerial-view-of-yacht-sailing-along-scenic-coastline-36210931/" target="_blank">Aerial View of Yacht Along Coastline</a></li>
+      <li><span class="credit">Amar Preciado</span><a href="https://www.pexels.com/video/woman-enjoying-nature-in-sunlit-forest-36189877/" target="_blank">Woman Enjoying Nature in Sunlit Forest</a></li>
+      <li><span class="credit">Canshotz</span><a href="https://www.pexels.com/video/fresh-produce-display-with-mist-in-grocery-store-36184814/" target="_blank">Fresh Produce Display with Mist</a></li>
+      <li><span class="credit">Toon Van Dyck</span><a href="https://www.pexels.com/video/majestic-waterfall-cascading-down-cliff-36196454/" target="_blank">Majestic Waterfall Cascading Down Cliff</a></li>
+      <li><span class="credit">RDNE Stock project</span><a href="https://www.pexels.com/video/a-dog-with-red-sunglasses-7515918/" target="_blank">A Dog with Red Sunglasses</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<script>
+  const container = document.getElementById('dylan-container');
+  const video     = document.getElementById('dylan-video');
+  const overlay   = document.getElementById('dylan-overlay');
+
+  container.addEventListener('click', () => {
+    if (video.paused) { video.play(); overlay.classList.add('hidden'); }
+    else              { video.pause(); overlay.classList.remove('hidden'); }
+  });
+
+  video.addEventListener('ended', () => overlay.classList.remove('hidden'));
+</script>
+
+</body>
+</html>

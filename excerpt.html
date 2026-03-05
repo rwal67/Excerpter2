@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excerpter</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,700;1,400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #ede6d6;
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    header {
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
+      height: 56px;
+      border-bottom: 1px solid #000;
+    }
+
+    header, header a, header button, header h1 {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.82rem;
+      font-weight: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    #header-title {
+      flex: 0 0 25%;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      background: #ede6d6;
+      border: none;
+      border-right: 1px solid #000;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    #header-title:hover { background: #ddd5c4; }
+    #header-title h1 { color: #000; }
+
+    #header-generate {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      cursor: pointer;
+      border: none;
+      color: #ede6d6;
+      transition: background 0.15s;
+    }
+    #header-generate:hover { background: #222; }
+    #header-generate.ended { background: #ede6d6; color: #000; }
+    #header-generate.ended:hover { background: #ddd5c4; }
+
+    #header-counter {
+      flex: 0 0 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ede6d6;
+      border: none;
+      border-left: 1px solid #000;
+    }
+    #counter-num { color: #000; font-size: 1.1rem; }
+
+    #header-about {
+      flex: 0 0 25%;
+      display: flex;
+      align-items: stretch;
+      border-left: 1px solid #000;
+      background: #000;
+    }
+    #header-about a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 24px;
+      width: 100%;
+      height: 100%;
+      color: #ede6d6;
+      text-decoration: none;
+    }
+    #header-about a:hover { background: #222; }
+
+    #diptych {
+      display: flex;
+      flex-direction: row-reverse;
+      flex: 1;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    #video-panel {
+      flex: 0 0 40%;
+      position: relative;
+      background: #ede6d6;
+      overflow: hidden;
+    }
+
+    #video-panel > video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    #video-panel > video.active { display: block; }
+
+    #distortion-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .distortion { position: absolute; }
+
+    #text-panel {
+      flex: 0 0 60%;
+      overflow-y: auto;
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+    }
+
+    #idle-cycler {
+      position: absolute;
+      top: 0; left: 630px; right: 80px; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    #idle-cycler span {
+      font-size: 15px;
+      font-weight: 300;
+      color: #000;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 88%;
+      text-overflow: ellipsis;
+    }
+
+    #output { display: flex; flex-direction: column; }
+
+    .line {
+      display: block;
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      color: #000;
+      letter-spacing: 0.01em;
+      padding: 0.1em 0;
+    }
+    .line.size-sm  { font-size: 15px;  line-height: 1.35; }
+    .line.size-md  { font-size: 20px;  line-height: 1.15; }
+    .line.size-lg  { font-size: 28px;  line-height: 1.05; }
+    .line.size-xl  { font-size: 40px;  line-height: 0.95; letter-spacing: -0.01em; }
+
+    .line.indent-1 { padding-left: 3em; }
+    .line.indent-2 { padding-left: 7em; }
+    .line.indent-3 { padding-left: 12em; }
+    .line.gap-before { margin-top: 0.6em; }
+
+    @media (max-width: 700px) {
+      body { overflow: auto; height: auto; }
+      #diptych { flex-direction: column; }
+      #video-panel { flex: none; height: 40vw; }
+      #text-panel { padding: 24px 20px; }
+      #header-about { flex: 0 0 20%; }
+      .line.indent-2 { padding-left: 3em; }
+      .line.indent-3 { padding-left: 5em; }
+      .line.size-xl  { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a id="header-title" href="index.html">
+    <h1>Excerpter</h1>
+  </a>
+  <button id="header-generate">
+    <span id="generate-label">Generate</span>
+  </button>
+  <div id="header-counter">
+    <span id="counter-num"></span>
+  </div>
+  <div id="header-about">
+    <a href="about.html">About</a>
+  </div>
+</header>
+
+<audio id="clickSound" src="typewriter.mp3" preload="auto"></audio>
+<audio id="resetSound" src="typewriter-button-slide-1a-47722.mp3" preload="auto"></audio>
+
+<div id="diptych">
+  <div id="video-panel">
+    <video id="vidA" muted loop playsinline></video>
+    <video id="vidB" muted loop playsinline></video>
+    <div id="distortion-layer"></div>
+  </div>
+  <div id="text-panel">
+    <div id="idle-cycler"><span id="idle-text"></span></div>
+    <div id="output"></div>
+  </div>
+</div>
+
+<script>
+  const excerpts = [
+    "the sun screamed through the curtains",
+    "like a thick coat of powder",
+    "they knelt in front of it",
+    "and i groan and thrash about under my covers in protest",
+    "charged with some strange phantom reminder",
+    "why i came out here",
+    "pilgrimage insurance",
+    "you can always klarna it",
+    "it was only then i realized those weren't real pillars in the italian restaurant",
+    "do you ever wake up and wonder who it is you woke up next to",
+    "the floor is so cold",
+    "and my feet are bare at this hour",
+    "over the kitchen counter under its granite top",
+    "there's a broken window fixed with sharp cobwebs",
+    "a missing panel an open door",
+    "the neon theotokos",
+    "a chill wind pensively sneaks",
+    "only when it musters the courage",
+    "open the door will ya",
+    "mind the jerry-rigged hinges",
+    "they add character",
+    "you will not find me",
+    "the sun was stowed away so long my finger left a trail in the dust coating it",
+    "the night was never to end",
+    "and all those things that should not be brought to light",
+    "were allowed to skip around and play the part",
+    "oh we danced the night away",
+    "but that night only fell into another and another",
+    "so much so there was no more nights after enough",
+    "though they didn't go anywhere",
+    "take in the hunch and uneven gait",
+    "only thing past that way is a more perfect dark",
+    "only momentarily paused",
+    "i bet you tell all your friends about this place",
+    "keeled like",
+    "felled game in the thicket",
+    "digging at the ground",
+    "they dug with their soft hands",
+    "the fresh dirt evicted the old dirt under their fingertips",
+    "like a pack of snarling dogs",
+    "grown skeletal in a proud hunger",
+    "running about",
+    "gnashing at the tails",
+    "a herd of sheep",
+    "or ambiguously soft creatures",
+    "tufted like seafoam",
+    "cresting the rim of a bald valley",
+    "along the interstate",
+    "at that the two voted it best to press on",
+    "the rain has ceased and only his musk stayed with us",
+    "out here the birds complain of the weather but they sing about it too",
+    "let out strange belching cry a sorry yodel",
+    "some people are still sleeping",
+    "skyscrapers blot out the sky",
+    "and i look up at the little lives in the little windows",
+    "the kids were playing house one held up a paper mortache",
+    "the stars hide from man",
+    "it is just shy of eight in the morning",
+    "every door down the street slammed",
+    "the parrot said something i cannot say",
+    "cars cough a little before finally peeling off",
+    "it's all such terrible business",
+    "awful really",
+    "and the town is a beating heart at this hour",
+    "paved with red brick",
+    "long loved by steel-toed dragged feet",
+    "i'll get to it tomorrow",
+    "and the green alligator on bates the one with the scaly paint",
+    "the crust of posters the mantle condemnation notices the lead paint inner core",
+    "a wiry tall young man all hollowed and caved-in",
+    "squirrel away from a sudden rain",
+    "leave the sunshine, keep the rain",
+    "in his hands is a parcel growing hot to the touch",
+    "oscar sang this about all this and more to himself",
+    "'fetch my tracksuit' he said 'it's a formal event'",
+    "sandra has been rolling her own cigarettes lately",
+    "'i wanna be a coal miner when i grow up'",
+    "that's exactly what i'm saying",
+    "but",
+    "i sure would hope not",
+    "can it be though",
+    "should it be",
+    "it's been on my mind",
+    "in my mind too",
+    "right this way",
+    "the powerball and divine providence",
+    "gesunteightyfourmillionthreehundredtwentythreethousandtwohundredandseventyone bless you",
+    "you do follow yes",
+    "beg your pardon",
+    "good evening",
+    "or you can hate everything else instead",
+    "and that is how i learned to fly",
+    "beautiful out isn't it",
+    "is that so",
+    "interesting",
+    "so it goes",
+    "the point still stands",
+    "nothing nothing in particular",
+    "what strange people and places tie us to the rock",
+    "from which sky do the birds fall who thrash and tear so",
+    "nearing the terminal point of a queue",
+    "one's conclusion recedes into hazy abstraction",
+    "i remember little of last night but my brain is trying that's why it hurts so much",
+    "or even the one before it at that",
+    "there are passing specters in my mind",
+    "faces painted with a smudged brush",
+    "blending them in with the color of the wood",
+    "the couch's pleather",
+    "that made up the scene around them",
+    "the bile pile",
+    "god loves me more than it loves you",
+    "this is the kind of lesson which you do not read or absorb but absorbs you so it doesn't really matter it's on its way",
+    "maybe you should try to find it",
+    "the path of each is tied to that of their predecessor",
+    "just as theirs is to the one before them",
+    "and the cycle goes on and on and on and on and on and on and on and on and on and on and etcetera and etcetera ad infinitum",
+    "only as a call to action",
+    "simple as that",
+    "that he was the very warden of the jail he was kept in was kept in",
+    "you are almost bound to hate it in some way",
+    "lucky number 7 yes",
+    "it was never them dear no it was never the beach and it was never your family",
+    "but you all along",
+    "what do you think of that",
+    "an awfully self-absorbed gig and an unpaid one at that",
+    "hating yourself how much do you have to love yourself to hate yourself",
+    "the steak is done dinner is served please can we behave ourselves",
+    "it felt like this conversation lasted for days",
+    "and maybe it did",
+    "i have found they laugh",
+    "it was only through such silence",
+    "where no laughter could be found",
+    "that my ears were primed to understand this",
+    "they will laugh and laugh",
+    "and lose sight of what it is they are laughing about",
+    "like flames being passed from candle to candle",
+    "if one were to go out",
+    "only one more is needed to relight the others",
+    "this is the one that will laugh the hardest",
+    "a striking chord",
+    "like a little pluck from up on high e.g. lightning",
+    "i chase its sound in everything",
+    "did that song really change your life though",
+    "gazing out the window",
+    "all kinds of visions all views that ocean",
+    "so alien",
+    "the thought of you makes me sad",
+    "pave their way through her mind",
+    "rubbing elbows with elbow patches",
+    "'i am the martini with an olive i am the east coast i am legion'",
+    "she dreams of the coast",
+    "where lively water crashes into dour cliffs",
+    "she met your father on a thursday night but it was on the cusp of friday",
+    "under white shutters and in the old college inn",
+    "over in the distance",
+    "it's no matter definitely no matter",
+    "does that water know its station does it do it well",
+    "and i knew one of us",
+    "my eyes or my hands",
+    "i took my finger and felt it so",
+    "you can make out a muted skyline",
+    "whose boasting had been whittled down",
+    "what a creature i was",
+    "anyway how was your holiday",
+    "idk lol hegel said something about that",
+    "they had a word for this business when zoroaster was in charge",
+    "that she misses her home back up in new york",
+    "no not that new york the other new york",
+    "so i walked round and round a room-shaped circle",
+    "om mani padme hum",
+    "?",
+    "on a day with too much traffic and not enough people",
+    "and friends that never stop laughing and family that never asks why",
+    "and the dog that never gets sick will get in the car that never needs to go anywhere",
+    "how my head pounds",
+    "with the stories of grain-fed honest boys preceding them",
+    "that's showbiz baby",
+    "what was that again i couldn't quite catch it",
+    "something about the quarterback",
+    "intentionally hit by a team van driven by his own teammates",
+    "something about a gas station thc experiment",
+    "life in the big city",
+    "and that he got up unscathed and had put a dent in the bus",
+    "'i heard that 70% of people who win the lottery lose it all bankruptcy'",
+    "'do you play the lottery'",
+    "i put it down years ago only when i'm drinking these days",
+    "an early riser",
+    "and he stowed away in the greater right breast pocket",
+    "malignant",
+    "frothed offerings to eros",
+    "he abandoning himself and all cares threw it all amid the creeping charlie",
+    "forgotten strewn about",
+    "and they get together at the dinner table and",
+    "talk about work that day the mortgage and how the kids are doing at school",
+    "and will gaze in horror at it all",
+    "the splendor of the little foothill we've climbed",
+    "and lost so much along the way",
+    "outstretched over that late afternoon dampened god-fearing clouds hung low",
+    "and the world will kick them and they will be more muddied but it will make no difference",
+    "no matter the shape no matter how strange",
+    "there is much you haven't to say in all the moments until that big one and by then you'll be speechless",
+    "oh then locking into the brown eyes of the man in the blue tracksuit",
+    "at that point richard had grown horribly pitiably blotto that means drunk he said",
+    "'can i ask you a question man'",
+    "'of course you needn't ask'",
+    "'presumably not much' he replied rather curtly at that",
+    "this is where the book starts",
+    "and this is where the story ends",
+    "and by way of that i have been enlightened i promise",
+    "with a great understanding of what a happy heart requires",
+    "'come on in the water's fine' he said gesturing to the tar pit",
+    "how does an idea come does a deer shit in the woods",
+    "the idea doesn't need you",
+    "the clamor of the crowd the drywall-covered rancor",
+    "never not even once had it occurred to me that it was myself all along",
+    "pick a hand any hand",
+    "but now every sunset is so greyed",
+    "it was lilac-blue",
+    "actually it was just a regular blue",
+    "all food is just a miserable dull compote",
+    "and i live for this stuff",
+    "this has been a bit unbecoming",
+    "my head churns no machines it powers no engines",
+    "gas is costly thoughts are cheap",
+    "though from where we stood all there was was the thicket",
+    "everybody in hell is entertained all the time that's what makes it hell",
+    "she hid herself among the lilies",
+    "and when the sun came up she would pretend to be no more than compost",
+    "it has a pretty decent 401k you know",
+    "they take it as a kind of entertainment",
+    "the morality of the material",
+    "chin dropped eyes fixed to the ky",
+    "look at them now look at me do we share any blemishes",
+    "everybody is wearing orange bronzer",
+    "and they're all throwing glass at each other",
+    "shiiiiit",
+    "i do not know anyone at this party",
+    "not even myself",
+    "is there anything on sale",
+    "'i am doing too much'",
+    "that right there is normality sorry to disappoint",
+    "nothing is as sweet as a yesterday",
+    "where can you buy a yesterday",
+    "but a vase for the water that is an indeterminate human life",
+    "what an animal am i",
+    "my condolences",
+    "a worm",
+    "and then another",
+    "and so there was the boy",
+    "crouched atomlike against a dull expanse",
+    "beyond which as far as he knew",
+    "lay no semblance of any world like ours",
+    "beyond that inklike curtain",
+    "life uncertain and all the better for that",
+    "if it were tucked away somewhere",
+    "maybe under a stone in a foreign field",
+    "out of living maybe out of time",
+    "many will buy wilted flowers",
+    "held by a set of manicured soft hands",
+    "it is with great jubilation",
+    "and with a heavy heart",
+    "dear alice",
+    "he drew two sevens and a king",
+    "she wonders if people litter at the beach",
+    "each strident step",
+    "landing on one segmented",
+    "square block of concrete",
+    "such is a little game i play with myself",
+    "toting such fun company",
+    "having strange conversations",
+    "and such a friend to the world and its creatures",
+    "was i",
+    "it wasn't forecasted",
+    "to rain tonight",
+    "lend your ears to",
+    "stately hooves coursing in",
+    "carried downwind from the",
+    "idle swaying of oriens",
+    "a little less yours",
+    "much less mine",
+    "and so the:",
+    "it is what it is what was it then",
+    "i don't know",
+    "it was against an evening sherbet sky",
+    "never did at that",
+    "there i climbed a ladder that fell",
+    "into a wheat field",
+    "and i became like the",
+    "wheat",
+    "and just before fall",
+    "the farmer would cut my hair",
+    "the river was the sink",
+    "and and and and and",
+    "the cup is empty",
+    "and the ocean is full",
+    "i asked god to send me to",
+    "california pennsylvania",
+    "jersey shore pennsylvania",
+    "indiana pennsylvania",
+    "idaho pennsylvania",
+    "where he saw it fit",
+    "god said he'd meet me in atlantic city i don't think that was god",
+    "you don't get it",
+    "would a cartoon tiger make it clearer",
+    "'the forest is full of trees as my head is full of these profundities'",
+    "thank you thank you i'm here all week",
+    "the ground snaked like a well it snaked like a snake",
+    "and there's no helping that",
+    "'freedom then in a sense is",
+    "not so much of the body but of the mind'",
+    "shut up",
+    "can i interest you in a",
+    "10% discount then",
+    "do the beasts say",
+    "'i am a beast and not a human'",
+    "they can smell it on me",
+    "go to vassar",
+    "missed me",
+    "'i should go to the gym",
+    "i will be chiseled'",
+    "you know i can walk down the street right now",
+    "and anyone could cough up a story",
+    "more compelling than yours by incalculable margins",
+    "if that life had vanished into",
+    "the void along with that star he just now spied",
+    "streaking across the sky",
+    "he too would fly",
+    "to disappear into that stygian lack thereof",
+  ];
+
+  const videos = [
+    "ExcerpterVid1.mp4","ExcerpterVid2.mp4","ExcerpterVid3.mp4",
+    "ExcerpterVid4.mp4","ExcerpterVid5.mp4","ExcerpterVid6.mp4",
+    "ExcerpterVid7.mp4","ExcerpterVid8.mp4","ExcerpterVid9.mp4",
+    "ExcerpterVid10.mp4","ExcerpterVid11.mp4","ExcerpterVid12.mp4",
+    "ExcerpterVid13.mp4","ExcerpterVid14.mp4","ExcerpterVid15.mp4",
+    "ExcerpterVid16.mp4",
+  ];
+
+  // ── Helpers ──
+  function rand(min, max)    { return Math.random() * (max - min) + min; }
+  function randInt(min, max) { return Math.floor(rand(min, max)); }
+  function randExcerpt()     { return excerpts[randInt(0, excerpts.length)]; }
+
+  // ── Size / indent helpers ──
+  const baseSizePool = ['size-sm','size-md','size-md','size-md','size-md','size-lg','size-lg','size-lg','size-xl'];
+
+  function pickSize(text) {
+    let pool = [...baseSizePool];
+    if (text.length > 55) pool = pool.filter(s => s !== 'size-xl');
+    if (text.length > 75) pool = pool.filter(s => s !== 'size-lg');
+    if (!pool.length) pool = ['size-md'];
+    return pool[randInt(0, pool.length)];
+  }
+
+  function pickIndent(size) {
+    const pools = {
+      'size-xl': [null,null,null,null,'indent-1'],
+      'size-lg': [null,null,null,'indent-1','indent-1','indent-2'],
+      'size-md': [null,null,null,'indent-1','indent-1','indent-2','indent-3'],
+      'size-sm': [null,null,null,'indent-1','indent-1','indent-2','indent-3'],
+    };
+    const pool = pools[size] || [null];
+    return pool[randInt(0, pool.length)];
+  }
+
+  // ── State ──
+  const DISTORTION_CAP = 6;
+  let remaining         = Math.floor(Math.random() * 5) + 8;
+  let availableExcerpts = [...excerpts];
+  let usedVideos        = [];
+  let activeSlot        = 'A';
+  let videoSwapped      = false;
+  let cycleEnded        = false;
+
+  // ── DOM refs ──
+  const vidA         = document.getElementById('vidA');
+  const vidB         = document.getElementById('vidB');
+  const distLayer    = document.getElementById('distortion-layer');
+  const outputDiv    = document.getElementById('output');
+  const generateBtn  = document.getElementById('header-generate');
+  const generateLabel= document.getElementById('generate-label');
+  const counterNum   = document.getElementById('counter-num');
+  const idleCycler   = document.getElementById('idle-cycler');
+  const idleTextEl   = document.getElementById('idle-text');
+  const clickSound   = document.getElementById('clickSound');
+  const resetSound   = document.getElementById('resetSound');
+
+  // ── Counter ──
+  function updateCounter() {
+    counterNum.textContent = remaining > 0 ? remaining : '0';
+  }
+
+  // ── Idle cycler ──
+  let idleInterval = null;
+  let idleIdx      = 0;
+
+  function startIdle() {
+    idleIdx = 0;
+    idleTextEl.textContent = excerpts[0];
+    idleCycler.style.display = 'flex';
+    idleInterval = setInterval(() => {
+      idleIdx = (idleIdx + 1) % excerpts.length;
+      idleTextEl.textContent = excerpts[idleIdx];
+    }, 80);
+  }
+
+  function stopIdle() {
+    clearInterval(idleInterval);
+    idleInterval = null;
+    idleCycler.style.display = 'none';
+  }
+
+  // ── Colors ──
+  const solidColors = [
+    'rgb(255,80,50)','rgb(255,220,0)','rgb(0,180,255)',
+    'rgb(255,255,255)','rgb(180,0,255)','rgb(0,255,120)',
+  ];
+  function solidColor() { return solidColors[randInt(0, solidColors.length)]; }
+
+  // ── Video helpers ──
+  function currentBaseSrc() {
+    return activeSlot === 'A' ? vidA.src : vidB.src;
+  }
+
+  function pickOverlayVideo() {
+    const cur  = currentBaseSrc();
+    const avail = videos.filter(v => !cur.endsWith(v));
+    return avail.length ? avail[randInt(0, avail.length)] : videos[randInt(0, videos.length)];
+  }
+
+  function makeVideoOverlay() {
+    const el = document.createElement('video');
+    el.src = pickOverlayVideo();
+    el.muted = true; el.loop = true; el.playsInline = true;
+    el.style.position  = 'absolute';
+    el.style.objectFit = 'cover';
+    const shape = randInt(0, 5);
+    if (shape === 0) {
+      const s = rand(22, 55);
+      el.style.left = `${rand(0,100-s)}%`; el.style.top = `${rand(0,100-s)}%`;
+      el.style.width = `${s}%`;            el.style.height = `${s}%`;
+    } else if (shape === 1) {
+      const s = rand(20, 50);
+      el.style.left = `${rand(0,100-s)}%`; el.style.top = `${rand(0,100-s)}%`;
+      el.style.width = `${s}%`;            el.style.height = `${s}%`;
+      el.style.borderRadius = '50%';
+    } else if (shape === 2) {
+      const side = Math.random() < 0.5 ? 'left' : 'right';
+      el.style[side] = '0'; el.style.top = '0';
+      el.style.width = '50%'; el.style.height = '100%';
+    } else if (shape === 3) {
+      const side = Math.random() < 0.5 ? 'top' : 'bottom';
+      el.style.left = '0'; el.style[side] = '0';
+      el.style.width = '100%'; el.style.height = '50%';
+    } else {
+      const h = rand(12, 30);
+      el.style.left = '0'; el.style.top = `${rand(5,100-h)}%`;
+      el.style.width = '100%'; el.style.height = `${h}%`;
+    }
+    return el;
+  }
+
+  // ── Text overlay — random color, optional highlight box ──
+  const overlayColors = [
+    '#fff', '#000', '#ff5032', '#ffd800', '#00b4ff',
+    '#b400ff', '#00ff78', '#ff9500', '#ff3cac', '#00e5cc',
+  ];
+
+  function pickOverlayColor(exclude) {
+    const pool = overlayColors.filter(c => c !== exclude);
+    return pool[randInt(0, pool.length)];
+  }
+
+  function makeTextOverlay() {
+    const el = document.createElement('div');
+    el.style.left          = `${rand(4, 50)}%`;
+    el.style.top           = `${rand(5, 78)}%`;
+    el.style.maxWidth      = '48%';
+    el.style.fontFamily    = "'IBM Plex Sans', sans-serif";
+    el.style.fontSize      = `${randInt(16, 34)}px`;
+    el.style.lineHeight    = '1.2';
+    el.style.pointerEvents = 'none';
+
+    const textColor = overlayColors[randInt(0, overlayColors.length)];
+    el.style.color = textColor;
+
+    if (Math.random() < 0.5) {
+      // highlighted box — bg is always a different color from the text
+      el.style.backgroundColor = pickOverlayColor(textColor);
+      el.style.padding         = '2px 6px';
+    } else {
+      // plain text with drop shadow
+      el.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
+    }
+
+    el.textContent = randExcerpt();
+    return el;
+  }
+
+  // ── Distortion types (equal weight) ──
+  const distortionTypes = [
+    () => { const e=document.createElement('div'); e.style.cssText=`left:0;width:100%;top:${rand(5,95)}%;height:${randInt(1,6)}px;background:${solidColor()};`; return e; },
+    () => { const e=document.createElement('div'); e.style.cssText=`top:0;height:100%;left:${rand(5,95)}%;width:${randInt(1,5)}px;background:${solidColor()};`; return e; },
+    () => { const e=document.createElement('div'); const w=rand(8,45),h=rand(8,40); e.style.cssText=`left:${rand(0,100-w)}%;top:${rand(0,100-h)}%;width:${w}%;height:${h}%;background:${solidColor()};`; return e; },
+    () => { const e=document.createElement('div'); const c=['top:0;left:0;','top:0;right:0;','bottom:0;left:0;','bottom:0;right:0;'],s=rand(10,35); e.style.cssText=`${c[randInt(0,4)]}width:${s}%;height:${s}%;background:${solidColor()};`; return e; },
+    () => makeTextOverlay(),
+    () => { const e=document.createElement('div'); e.style.cssText=`left:0;width:100%;top:${rand(10,80)}%;height:${rand(3,15)}%;background:${solidColor()};`; return e; },
+    () => { const e=document.createElement('div'); const s=rand(4,25); e.style.cssText=`left:${rand(5,90)}%;top:${rand(5,90)}%;width:${s}%;height:${s}%;border-radius:50%;background:${solidColor()};`; return e; },
+    () => { const e=document.createElement('div'); const w=rand(10,50),h=rand(10,40); e.style.cssText=`left:${rand(0,100-w)}%;top:${rand(0,100-h)}%;width:${w}%;height:${h}%;border:${randInt(1,4)}px solid ${solidColor()};background:transparent;`; return e; },
+    () => makeVideoOverlay(),
+  ];
+
+  function addDistortion() {
+    if (distLayer.children.length >= DISTORTION_CAP) distLayer.removeChild(distLayer.firstChild);
+    const el = distortionTypes[randInt(0, distortionTypes.length)]();
+    el.classList.add('distortion');
+    distLayer.appendChild(el);
+    if (el.tagName === 'VIDEO') { el.load(); el.play().catch(() => {}); }
+  }
+
+  function getRandomVideo() {
+    let avail = videos.filter(v => !usedVideos.includes(v));
+    if (!avail.length) { usedVideos = []; avail = [...videos]; }
+    const pick = avail[randInt(0, avail.length)];
+    usedVideos.push(pick);
+    return pick;
+  }
+
+  function swapVideo() {
+    const next = getRandomVideo();
+    if (activeSlot === 'A') {
+      vidA.pause();
+      vidB.src = next; vidB.load(); vidB.play();
+      vidA.classList.remove('active'); vidB.classList.add('active');
+      activeSlot = 'B';
+    } else {
+      vidB.pause();
+      vidA.src = next; vidA.load(); vidA.play();
+      vidB.classList.remove('active'); vidA.classList.add('active');
+      activeSlot = 'A';
+    }
+  }
+
+  function doVideoAction() {
+    if (!videoSwapped) {
+      swapVideo();
+      distLayer.innerHTML = '';
+      videoSwapped = true;
+      return;
+    }
+    if (Math.random() < 0.35) addDistortion();
+  }
+
+  // ── Text helpers ──
+  const punctMarks = ['?','!','.',',',';','...',':'];
+
+  function injectPunct(text) {
+    if (Math.random() > 0.20) return text;
+    const mark = punctMarks[randInt(0, punctMarks.length)];
+    if (Math.random() < 0.55) return text.replace(/[.,;:!?…]+$/, '') + mark;
+    const words = text.split(' ');
+    if (words.length < 3) return text + mark;
+    const pos = randInt(1, words.length - 1);
+    if (/[.,;:!?]$/.test(words[pos])) return text;
+    words[pos] += mark;
+    return words.join(' ');
+  }
+
+  function cleanPunct(text) {
+    return text.replace(/,\s*—/g, ',').replace(/\s*—\s*/g, ' ');
+  }
+
+  function styleText(text) {
+    const short = text.length < 42;
+    const r = Math.random();
+    let html = text, extraStyle = '';
+    if (r < 0.18) {
+      html = `<i>${text}</i>`;
+    } else if (r < 0.27) {
+      extraStyle = 'font-weight:300;';
+    } else if (short && r < 0.33) {
+      html = text.toUpperCase();
+      extraStyle = 'letter-spacing:0.1em;';
+    } else {
+      const ws = text.split(' ');
+      const candidates = ws.map((w,i) => w.replace(/[^a-zA-Z]/g,'').length > 4 ? i : -1).filter(i => i >= 0);
+      if (candidates.length && Math.random() < 0.2) {
+        const wi = candidates[randInt(0, candidates.length)];
+        ws[wi] = Math.random() < 0.5 ? `<b>${ws[wi]}</b>` : `<i>${ws[wi]}</i>`;
+      }
+      html = ws.join(' ');
+    }
+    return { html, extraStyle };
+  }
+
+  function makeLine(text, size, indent, gapBefore) {
+    const { html, extraStyle } = styleText(injectPunct(cleanPunct(text)));
+    const el = document.createElement('span');
+    el.classList.add('line', size);
+    if (indent)     el.classList.add(indent);
+    if (gapBefore)  el.classList.add('gap-before');
+    if (extraStyle) el.style.cssText = extraStyle;
+    el.innerHTML = html;
+    return el;
+  }
+
+  // ── Cycle logic ──
+  function endCycle() {
+    cycleEnded = true;
+    generateLabel.textContent = 'Restart';
+    generateBtn.classList.add('ended');
+    counterNum.textContent = '0';
+  }
+
+  function triggerGenerate() {
+    if (cycleEnded) { triggerRestart(); return; }
+
+    stopIdle();
+
+    clickSound.currentTime = 0;
+    clickSound.play();
+
+    if (remaining <= 0 || availableExcerpts.length === 0) { endCycle(); return; }
+
+    const panel = document.getElementById('text-panel');
+    if (outputDiv.scrollHeight >= panel.clientHeight - 40) { endCycle(); return; }
+
+    remaining--;
+    updateCounter();
+    doVideoAction();
+
+    const idx     = randInt(0, availableExcerpts.length);
+    const primary = availableExcerpts.splice(idx, 1)[0];
+    const isShort = primary.length < 38;
+    const doCluster = isShort && Math.random() < 0.28 && availableExcerpts.length > 1;
+
+    if (doCluster) {
+      const shortPool = availableExcerpts.map((t,i) => ({t,i})).filter(({t}) => t.length < 38);
+      const extra = Math.min(Math.random() < 0.5 ? 1 : 2, shortPool.length);
+      const clusterTexts = [primary];
+      for (let i = 0; i < extra; i++) {
+        const pick = shortPool.splice(randInt(0, shortPool.length), 1)[0];
+        clusterTexts.push(pick.t);
+        const mi = availableExcerpts.indexOf(pick.t);
+        if (mi >= 0) availableExcerpts.splice(mi, 1);
+      }
+      const clusterSizePool = ['size-sm','size-sm','size-md','size-md','size-md','size-lg'];
+      const size   = clusterSizePool[randInt(0, clusterSizePool.length)];
+      const indent = pickIndent(size);
+      const gap    = Math.random() < 0.25;
+      clusterTexts.forEach((t,i) => outputDiv.appendChild(makeLine(t, size, indent, i === 0 ? gap : false)));
+    } else {
+      const size   = pickSize(primary);
+      const indent = pickIndent(size);
+      const gap    = Math.random() < 0.22;
+      outputDiv.appendChild(makeLine(primary, size, indent, gap));
+    }
+
+    if (remaining <= 0) endCycle();
+  }
+
+  function triggerRestart() {
+    resetSound.currentTime = 0;
+    resetSound.play();
+    cycleEnded        = false;
+    availableExcerpts = [...excerpts];
+    usedVideos        = [];
+    videoSwapped      = false;
+    remaining         = Math.floor(Math.random() * 5) + 8;
+    outputDiv.innerHTML = '';
+    distLayer.innerHTML = '';
+    vidA.classList.remove('active'); vidA.pause(); vidA.removeAttribute('src');
+    vidB.classList.remove('active'); vidB.pause(); vidB.removeAttribute('src');
+    activeSlot = 'A';
+    generateLabel.textContent = 'Generate';
+    generateBtn.classList.remove('ended');
+    updateCounter();
+    startIdle();
+  }
+
+  // ── Init ──
+  generateBtn.addEventListener('click', triggerGenerate);
+  updateCounter();
+  startIdle();
+</script>
+</body>
+</html>

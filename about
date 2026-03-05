@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Excerpts with Static Image and Sound</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<header>
+    <h1 style="margin: 0; font-size: 1.5rem; color: #333;">Excerpter</h1>
+    <div id="button-container" class="button-box">
+        <!-- Generate and Restart buttons centered -->
+        <button id="randomBtn" class="button">Generate</button>
+        <button id="restartBtn" class="button">Restart</button>
+    </div>
+    <nav>
+        <a href="about.html">About</a>
+    </nav>
+</header>
+<body>
+
+    <div id="output-wrapper">
+        <div id="output"></div>
+        <div id="image-wrapper" style="display:none;">
+            <img id="staticImage" src="" alt="Static Random Image">
+        </div>
+    </div>
+   
+    <!-- Audio elements for sound effects -->
+    <div id="button-container" class="button-box">
+        <audio id="clickSound" src="typewriter.mp3" preload="auto"></audio>
+        <audio id="resetSound" src="typewriter-button-slide-1a-47722.mp3" preload="auto"></audio>
+    </div>
+    </body>
+    </html>

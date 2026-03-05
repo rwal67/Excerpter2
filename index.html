@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excerpter</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #ede6d6;
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* ruled lines */
+    .rule {
+      width: 100%;
+      height: 1px;
+      background: #000;
+      margin: 6px 0;
+    }
+    .rule.short { width: 60%; }
+    .rule.med   { width: 80%; }
+
+    h1.title {
+      font-size: 1.8rem;
+      font-weight: normal;
+      letter-spacing: 0.06em;
+      color: #000;
+      text-align: center;
+      margin: 12px 0 0;
+    }
+
+    .subtitle {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: #555;
+      text-align: center;
+      text-transform: uppercase;
+      margin: 4px 0 12px;
+    }
+
+    .infer {
+      width: 40%;
+      height: 40%;
+      margin: 12px 0;
+    }
+
+    a.start-btn {
+      display: inline-block;
+      border: 1px solid #000;
+      color: #000;
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 7px 22px;
+      margin: 12px 0;
+      transition: background 0.2s, color 0.2s;
+    }
+    a.start-btn:hover {
+      background: #000;
+      color: #ede6d6;
+    }
+
+    .byline {
+      font-size: 0.75rem;
+      color: #888;
+      text-align: center;
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+      margin-top: 14px;
+    }
+
+    .byline a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .byline a:hover { font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="rule"></div>
+    <div class="rule med"></div>
+    <div class="rule short"></div>
+
+    <h1 class="title">Excerpter</h1>
+
+    <img class="infer" src="inferti.svg" alt="">
+
+    <a class="start-btn" href="excerpt.html">Start</a>
+
+    <p class="subtitle">A random prose generator</p>
+
+    <div class="rule short"></div>
+    <div class="rule med"></div>
+    <div class="rule"></div>
+
+    <p class="byline">
+      Rory Walsh<br>
+      <a href="about.html">About</a>
+    </p>
+
+  </div>
+</body>
+</html>
